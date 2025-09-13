@@ -1,0 +1,8 @@
+{
+  "problem": "Solve the equation: 5x + 6 = 14. Find x.",
+  "level": "medium",
+  "type": "algebra",
+  "gt_solution": "x = 1.60",
+  "gt_answer": "1.60",
+  "nickname": "linear_equation_4"
+}

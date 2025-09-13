@@ -1,0 +1,53 @@
+# Intertemporal Crosscoder Configuration - Local Testing
+# Uses local mock data for fast testing without network access
+
+model:
+  model_id: "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+  dtype: "bfloat16"
+  device_map: "auto"
+  max_length: 256
+
+dataset:
+  name: "local"  # Not used when use_local=true
+  split: "default"
+  model_subdir: "mock"
+  limit_problems: 3
+  streaming: false  # Not needed for local files
+  seed: 0
+  use_local: true  # Use local files instead of HuggingFace
+  local_dir: "temporal_xc/mock_data"  # Path to local data
+
+  # Training dataset configuration
+  training_dataset:
+    enabled: true
+    layer: 19  # Which layer to use for training
+    k_values: [1, 2, 4]  # Predict k tokens ahead
+    hook_name: "resid_post"  # Use post-residual stream
+    max_examples_per_problem: 20  # Limit examples per problem
+    min_chunk_length: 5  # Skip very short chunks
+    output_dir: "large_files/training_datasets"
+
+training:
+  batch_size: 2
+  num_workers: 0
+  shuffle: true
+  pin_memory: false
+
+display:
+  max_steps_shown: 4
+  top_k_anchors: 2
+  text_truncate_length: 120
+  show_examples: 2
+
+logging:
+  verbosity: 1
+  wandb:
+    enabled: false
+  save_results: false
+  output_dir: "test_results"
+
+visualization:
+  enabled: true
+  output_dir: "large_files/viz"
+  auto_open: false
+  max_problems: 2

@@ -1,0 +1,8 @@
+{
+  "problem": "Solve the equation: 4x + 5 = 13. Find x.",
+  "level": "medium",
+  "type": "algebra",
+  "gt_solution": "x = 2.00",
+  "gt_answer": "2.00",
+  "nickname": "linear_equation_3"
+}

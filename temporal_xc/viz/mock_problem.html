@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Visualization: problem_0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .meta-info {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .meta-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .external-link {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .external-link:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .problem-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .problem-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #2c3e50;
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .solution-section {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .chunk {
+            background: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ddd;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chunk:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .chunk-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .chunk-idx {
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .chunk-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+        }
+
+        .chunk-text {
+            margin: 10px 0;
+            line-height: 1.7;
+        }
+
+        .importance-bar {
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .importance-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .metric-value {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .high-importance {
+            border-left-color: #dc3545 !important;
+            background: #fff5f5 !important;
+        }
+
+        .medium-importance {
+            border-left-color: #ffc107 !important;
+            background: #fffdf5 !important;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧮 linear_equation_0</h1>
+            <div class="meta-info">
+                <span class="meta-badge">📊 medium</span>
+                <span class="meta-badge">🏷️ algebra</span>
+                <span class="meta-badge">✅ GT: 8.00</span>
+                <span class="meta-badge">🔢 6 steps</span>
+            </div>
+            <a href="https://thought-anchors.com/explore?model=deepseek-r1-distill-llama-8b&problem=problem_0&temp=temperature_0.6_top_p_0.95&type=correct_base_solution" target="_blank" class="external-link">
+                🔗 View on Thought Anchors (if available)
+            </a>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="problem-section">
+                    <h2>📝 Problem Statement</h2>
+                    <div class="problem-text">
+                        Solve the equation: 1x + 2 = 10. Find x.
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Total Steps</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">High Importance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">High Accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h2>🤔 Chain of Thought</h2>
+                <div class="chunks">
+    
+                    <div class="chunk high-importance" style="border-left-color: rgba(165, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 0</span>
+                            <div class="chunk-tags"><span class="tag">reasoning</span><span class="tag">algebra</span></div>
+                        </div>
+                        <div class="chunk-text">Step 0: Setting up the equation. 1x + 2 = 10</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 30.0%; background: rgba(165, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.300</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.250</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.800</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk high-importance" style="border-left-color: rgba(197, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 1</span>
+                            <div class="chunk-tags"><span class="tag">reasoning</span><span class="tag">algebra</span></div>
+                        </div>
+                        <div class="chunk-text">Step 1: Isolating x. 1x + 2 = 10</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 40.0%; background: rgba(197, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.400</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.370</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.830</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk high-importance" style="border-left-color: rgba(229, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 2</span>
+                            <div class="chunk-tags"><span class="tag">reasoning</span><span class="tag">algebra</span></div>
+                        </div>
+                        <div class="chunk-text">Step 2: Simplifying. 1x + 2 = 10</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 50.0%; background: rgba(229, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.500</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.490</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.860</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk high-importance" style="border-left-color: rgba(229, 197, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 3</span>
+                            <div class="chunk-tags"><span class="tag">reasoning</span><span class="tag">algebra</span></div>
+                        </div>
+                        <div class="chunk-text">Step 3: Computing. 1x + 2 = 10</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 60.00000000000001%; background: rgba(229, 197, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.600</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.610</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.890</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk high-importance" style="border-left-color: rgba(229, 165, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 4</span>
+                            <div class="chunk-tags"><span class="tag">reasoning</span><span class="tag">algebra</span></div>
+                        </div>
+                        <div class="chunk-text">Step 4: Verifying. 1x + 2 = 10</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 70.0%; background: rgba(229, 165, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.700</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.730</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.920</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk high-importance" style="border-left-color: rgba(229, 133, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 5</span>
+                            <div class="chunk-tags"><span class="tag">reasoning</span><span class="tag">algebra</span></div>
+                        </div>
+                        <div class="chunk-text">Step 5: Final answer. 1x + 2 = 10</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 80.0%; background: rgba(229, 133, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.800</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.850</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.950</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scrolling to high-importance chunks
+        document.addEventListener('DOMContentLoaded', function() {
+            const chunks = document.querySelectorAll('.chunk');
+            chunks.forEach(chunk => {
+                chunk.addEventListener('click', function() {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+    

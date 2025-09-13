@@ -1,0 +1,118 @@
+# Intertemporal Crosscoder Configuration
+# Controls model, dataset, and experiment settings
+
+model:
+  # Model to use for reasoning traces
+  model_id: "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+  # Data type for model weights (bfloat16, float16, float32, or null for auto)
+  dtype: "bfloat16"
+  # Device mapping strategy
+  device_map: "auto"
+  # Maximum sequence length for tokenization
+  max_length: 512
+
+dataset:
+  # HuggingFace dataset name
+  name: "uzaymacar/math-rollouts"
+  # Dataset split to use
+  split: "default"
+  # Model subdirectory to filter for in the dataset
+  model_subdir: "deepseek-r1-distill-llama-8b"
+  # Number of problems to load (set to -1 for all)
+  limit_problems: 12
+  # Whether to stream the dataset (recommended for large datasets)
+  streaming: true
+  # Seed for reproducibility
+  seed: 0
+  # Maximum retries for dataset loading
+  max_retries: 3
+  # Use local cache if available
+  use_cache: true
+
+training:
+  # Batch size for dataloader
+  batch_size: 12
+  # Number of dataloader workers
+  num_workers: 0
+  # Whether to shuffle the dataset
+  shuffle: true
+  # Pin memory for CUDA
+  pin_memory: true
+
+sae:
+  # SAE model to use (if available)
+  # Example: "qresearch/DeepSeek-R1-Distill-Llama-8B-SAE-l19"
+  model_id: null
+  # Layer to extract features from
+  layer: 19
+  # Whether to use SAE features
+  enabled: false
+
+probe:
+  # Types of probes to train
+  mappings:
+    - "raw_to_raw"      # Raw residuals to raw residuals
+    - "sae_to_sae"      # SAE features to SAE features
+    - "raw_to_sae"      # Raw residuals to SAE features
+    - "sae_to_raw"      # SAE features to raw residuals
+  # Regularization strength for ridge regression
+  alpha: 1.0
+  # Maximum iterations for solver
+  max_iter: 1000
+
+evaluation:
+  # Metrics to compute
+  metrics:
+    - "r2"              # R-squared score
+    - "auroc"           # Area under ROC curve
+    - "precision_at_k"  # Precision at K
+    - "cca"             # Canonical correlation analysis
+  # K values for precision@k
+  precision_k_values: [10, 50, 100]
+  # Whether to run control experiments
+  controls:
+    anti_copy_split: true
+    adjacency_shuffle: true
+    position_shift: true
+
+anchor:
+  # Importance metrics to use for anchor scoring (in order of preference)
+  metrics:
+    - "resampling_importance_accuracy"
+    - "counterfactual_importance_accuracy"
+    - "forced_importance_accuracy"
+  # Threshold for considering a step as an anchor
+  threshold: 0.5
+  # Whether to analyze anchor vs non-anchor performance
+  analyze_separately: true
+
+logging:
+  # Weights & Biases configuration
+  wandb:
+    enabled: false
+    project: "intertemporal-crosscoder"
+    entity: null
+    tags: ["reasoning", "sae", "temporal"]
+  # Verbosity level (0=quiet, 1=normal, 2=verbose)
+  verbosity: 1
+  # Whether to save results to file
+  save_results: true
+  # Output directory for results
+  output_dir: "results"
+
+display:
+  # Display settings for summaries
+  max_steps_shown: 8
+  top_k_anchors: 3
+  text_truncate_length: 180
+  show_examples: 2
+
+visualization:
+  # Whether to automatically generate HTML dashboard
+  enabled: true
+  # Output directory for visualizations (using large_files to avoid git tracking)
+  output_dir: "large_files/viz"
+  # Whether to open in browser automatically (requires webbrowser module)
+  auto_open: false
+  # Number of problems to visualize (set to -1 for all)
+  max_problems: 3

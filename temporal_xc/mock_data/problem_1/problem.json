@@ -1,0 +1,8 @@
+{
+  "problem": "Solve the equation: 2x + 3 = 11. Find x.",
+  "level": "medium",
+  "type": "algebra",
+  "gt_solution": "x = 4.00",
+  "gt_answer": "4.00",
+  "nickname": "linear_equation_1"
+}

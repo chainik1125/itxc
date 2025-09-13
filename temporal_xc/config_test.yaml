@@ -1,0 +1,70 @@
+# Intertemporal Crosscoder Configuration - Test Version
+# Minimal configuration for testing without large downloads
+
+model:
+  # Use a smaller model for testing (you can change this back to DeepSeek later)
+  model_id: "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+  dtype: "bfloat16"
+  device_map: "auto"
+  max_length: 256  # Smaller for testing
+
+dataset:
+  name: "uzaymacar/math-rollouts"
+  split: "default"
+  model_subdir: "deepseek-r1-distill-llama-8b"
+  # Specific path within the model directory
+  temperature: "temperature_0.6_top_p_0.95"
+  solution_type: "correct_base_solution"  # or incorrect_base_solution, etc.
+  limit_problems: 2  # Load 2 problems for testing activation harvesting
+  streaming: true
+  seed: 0
+  max_retries: 2  # Fewer retries for testing
+  use_cache: true
+  max_search_time: 30  # Maximum seconds to search for problems
+  max_rows_to_check: 2000  # Maximum rows to check before stopping
+
+  # Activation harvesting configuration
+  activation_harvest:
+    use_transformer_lens: true  # Use TransformerLens for cleaner hooks
+    layers: [15, 19]  # Just two layers for testing
+    hook_types: ["resid_mid", "mlp_in"]  # Residual stream and MLP input
+    max_problems: 2  # Process 2 problems
+    max_pairs_per_problem: 5  # Up to 5 src->tgt pairs per problem
+    min_anchor_score: 0.05  # Lower threshold for testing
+    sentence_pooling: "last"  # How to pool: "mean", "last", "max", or null for no pooling
+    output_dir: "large_files/activations"
+
+  # Training dataset configuration
+  training_dataset:
+    enabled: true
+    layer: 19  # Which layer to use for training
+    k_values: [1, 2, 4]  # Predict k tokens ahead
+    hook_name: "resid_post"  # Use post-residual stream
+    max_examples_per_problem: 50  # Limit examples per problem
+    min_chunk_length: 10  # Skip very short chunks
+    output_dir: "large_files/training_datasets"
+
+training:
+  batch_size: 2  # Smaller batch for testing
+  num_workers: 0
+  shuffle: true
+  pin_memory: false
+
+display:
+  max_steps_shown: 3
+  top_k_anchors: 2
+  text_truncate_length: 100
+  show_examples: 1
+
+logging:
+  verbosity: 2  # More verbose for debugging
+  wandb:
+    enabled: false
+  save_results: false
+  output_dir: "test_results"
+
+visualization:
+  enabled: true  # Generate HTML dashboard
+  output_dir: "large_files/viz"
+  auto_open: false
+  max_problems: 1  # Just visualize the first problem for testing

@@ -1,31 +1,34 @@
-[project]
-name = "temporal_xc"
-version = "0.0.1"
-description = "Sample repository using Apollo best engineering practices"
-requires-python = ">=3.11"
-readme = "README.md"
-dependencies = [
-    "torch",
-    "torchvision",
-    "pydantic",
-    "wandb",
-    "fire",
-    "tqdm",
-    "pytest",
-    "ipykernel",
-]
-
-[project.optional-dependencies]
-dev = [
-    "ruff",
-    "pyright",
-    "pre-commit",
-]
-
+# Build system configuration
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
+# Project metadata
+[project]
+name = "itxc"
+version = "0.0.1"
+description = "Sample repository using Apollo best engineering practices"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fire",
+    "ipykernel",
+    "pydantic",
+    "torch",
+    "torchvision",
+    "tqdm",
+    "wandb",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+    "pyright",
+    "pytest",
+    "ruff",
+]
+
+# Tool configurations
 [tool.setuptools]
 packages = ["temporal_xc"]
 
@@ -35,30 +38,22 @@ fix = true
 
 [tool.ruff.lint]
 select = [
-    # pycodestyle
-    "E",
-    # Pyflakes
-    "F",
-    # pyupgrade
-    "UP",
-    # flake8-bugbear
-    "B",
-    # flake8-simplify
-    "SIM",
-    # isort
-    "I",
+    "E",    # pycodestyle
+    "F",    # Pyflakes
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "I",    # isort
 ]
 
 [tool.ruff.format]
-# Enable reformatting of code snippets in docstrings.
 docstring-code-format = true
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-third-party = ["wandb"]
 
 [tool.pyright]
 include = ["temporal_xc", "tests"]
-
 strictListInference = true
 strictDictionaryInference = true
 strictSetInference = true

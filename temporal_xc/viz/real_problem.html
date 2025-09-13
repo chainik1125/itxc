@@ -1,0 +1,3259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Visualization: problem_1591</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .meta-info {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .meta-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .external-link {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .external-link:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .problem-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .problem-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #2c3e50;
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .solution-section {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .chunk {
+            background: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ddd;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chunk:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .chunk-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .chunk-idx {
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .chunk-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+        }
+
+        .chunk-text {
+            margin: 10px 0;
+            line-height: 1.7;
+        }
+
+        .importance-bar {
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .importance-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .metric-value {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .high-importance {
+            border-left-color: #dc3545 !important;
+            background: #fff5f5 !important;
+        }
+
+        .medium-importance {
+            border-left-color: #ffc107 !important;
+            background: #fffdf5 !important;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧮 Effective Interest Rate</h1>
+            <div class="meta-info">
+                <span class="meta-badge">📊 Level 5</span>
+                <span class="meta-badge">🏷️ Algebra</span>
+                <span class="meta-badge">✅ GT: 6.17</span>
+                <span class="meta-badge">🔢 101 steps</span>
+            </div>
+            <a href="https://thought-anchors.com/explore?model=deepseek-r1-distill-llama-8b&problem=problem_1591&temp=temperature_0.6_top_p_0.95&type=correct_base_solution" target="_blank" class="external-link">
+                🔗 View on Thought Anchors (if available)
+            </a>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="problem-section">
+                    <h2>📝 Problem Statement</h2>
+                    <div class="problem-text">
+                        Dr. Fu Manchu has a bank account that has an annual interest rate of 6 percent, but it compounds monthly.  If this is equivalent to a bank account that compounds annually at a rate of $r$ percent, then what is $r$?  (Give your answer to the nearest hundredth.)
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">101</div>
+                        <div class="stat-label">Total Steps</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">High Importance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">56</div>
+                        <div class="stat-label">High Accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-section">
+                <h2>🤔 Chain of Thought</h2>
+                <div class="chunks">
+    
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 84, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 0</span>
+                            <div class="chunk-tags"><span class="tag">problem_setup</span></div>
+                        </div>
+                        <div class="chunk-text">Okay, so I have this problem about Dr.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.000000000000004%; background: rgba(68, 229, 84, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.060</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.760</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(97, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 1</span>
+                            <div class="chunk-tags"><span class="tag">problem_setup</span></div>
+                        </div>
+                        <div class="chunk-text">Fu Manchu's bank account.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 9.000000000000007%; background: rgba(97, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.090</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.710</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 78, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 2</span>
+                            <div class="chunk-tags"><span class="tag">problem_setup</span></div>
+                        </div>
+                        <div class="chunk-text">It says that the account has an annual interest rate of 6 percent, but it compounds monthly.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 3.0000000000000027%; background: rgba(68, 229, 78, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.056</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.800</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(72, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 3</span>
+                            <div class="chunk-tags"><span class="tag">problem_setup</span></div>
+                        </div>
+                        <div class="chunk-text">I need to find the equivalent annual interest rate, r percent, that would give the same return as the monthly compounding.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.0000000000000009%; background: rgba(72, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.034</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.770</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 94, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 4</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Hmm, let me think about how to approach this.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 8.000000000000007%; background: rgba(68, 229, 94, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.080</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.082</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.780</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(91, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 5</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">First, I remember that compound interest can be calculated using the formula:
+\[ A = P \left(1 + \frac{r}{n}\right)^n t \]
+Where:
+- \( A \) is the amount of money accumulated after n years, including interest.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 7.000000000000006%; background: rgba(91, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.070</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.119</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.700</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 94, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 6</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">- \( P \) is the principal amount (the initial amount of money).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 8.000000000000007%; background: rgba(68, 229, 94, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.080</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.770</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 72, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 7</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">- \( r \) is the annual interest rate (decimal).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0.9999999999999898%; background: rgba(68, 229, 72, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.690</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(91, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 8</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">- \( n \) is the number of times that interest is compounded per year.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 6.999999999999995%; background: rgba(91, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.070</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.680</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 72, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 9</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">- \( t \) is the time the money is invested for in years.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.0000000000000009%; background: rgba(68, 229, 72, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.750</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 75, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 10</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">In this problem, the interest is compounded monthly, so n would be 12.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.0000000000000018%; background: rgba(68, 229, 75, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.020</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.025</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.740</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(84, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 11</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">The annual interest rate is 6 percent, which is 0.06 in decimal.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.000000000000004%; background: rgba(84, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.109</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.720</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 75, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 12</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Since it's compounded monthly, the monthly rate would be \( \frac{0.06}{12} \).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.0000000000000018%; background: rgba(68, 229, 75, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.020</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.770</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(91, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 13</span>
+                            <div class="chunk-tags"><span class="tag">uncertainty_management</span></div>
+                        </div>
+                        <div class="chunk-text">Wait, but I need to find the equivalent annual rate, r, that compounds once a year but gives the same total amount as the monthly compounding.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 6.999999999999995%; background: rgba(91, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.070</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.164</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.750</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 84, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 14</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">So, I think I need to set up an equation where the amount from monthly compounding equals the amount from annual compounding.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.999999999999993%; background: rgba(68, 229, 84, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.020</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.820</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 113, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 15</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">Let me denote the principal as P.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 14.000000000000002%; background: rgba(68, 229, 113, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.140</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.166</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.770</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 73, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 16</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">After t years, the amount with monthly compounding would be:
+\[ A_{\text{monthly}} = P \left(1 + \frac{0.06}{12}\right)^{12 t} \]</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.3838383838383872%; background: rgba(68, 229, 73, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.014</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.011</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.630</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(89, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 17</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">And the amount with annual compounding would be:
+\[ A_{\text{annual}} = P \left(1 + r\right)^t \]</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 6.383838383838391%; background: rgba(89, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.064</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.137</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.616</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 88, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 18</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Since these two amounts are supposed to be equal, I can set them equal to each other:
+\[ P \left(1 + \frac{0.06}{12}\right)^{12 t} = P \left(1 + r\right)^t \]</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 6.000000000000005%; background: rgba(68, 229, 88, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.060</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.380</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.680</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(107, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 19</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Hmm, the principal P cancels out, so that simplifies things.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 12.0%; background: rgba(107, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.120</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.131</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.620</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 88, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 20</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So we have:
+\[ \left(1 + \frac{0.06}{12}\right)^{12 t} = \left(1 + r\right)^t \]</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.999999999999995%; background: rgba(68, 229, 88, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.060</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.058</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.740</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(72, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 21</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Now, I need to solve for r.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0.9999999999999898%; background: rgba(72, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.018</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.680</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(81, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 22</span>
+                            <div class="chunk-tags"><span class="tag">uncertainty_management</span></div>
+                        </div>
+                        <div class="chunk-text">Since t is the time in years, but it's not specified here.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.0000000000000036%; background: rgba(81, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.063</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.690</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 69, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 23</span>
+                            <div class="chunk-tags"><span class="tag">uncertainty_management</span></div>
+                        </div>
+                        <div class="chunk-text">Wait, is t given?</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0.27272727272726893%; background: rgba(68, 229, 69, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.003</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.730</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 84, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 24</span>
+                            <div class="chunk-tags"><span class="tag">uncertainty_management</span></div>
+                        </div>
+                        <div class="chunk-text">Let me check the problem again.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.999999999999993%; background: rgba(68, 229, 84, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.209</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.730</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(78, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 25</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">It just says the bank account has an annual interest rate of 6 percent, compounds monthly.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.9999999999999916%; background: rgba(78, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.680</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(84, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 26</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">So, I think t is 1 year because we're comparing the rates for the same time period.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.000000000000004%; background: rgba(84, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.032</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.710</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 84, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 27</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, if t = 1, the equation becomes:
+\[ \left(1 + \frac{0.06}{12}\right)^{12 \times 1} = \left(1 + r\right)^1 \]</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.000000000000004%; background: rgba(68, 229, 84, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.014</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.760</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 81, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 28</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Simplify the left side:
+First, \( \frac{0.06}{12} \) is the monthly interest rate.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 3.9999999999999925%; background: rgba(68, 229, 81, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.022</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.710</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(117, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 29</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Let me calculate that:
+\( 0.06 \div 12 = 0.005 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 14.999999999999991%; background: rgba(117, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.150</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.205</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.670</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 110, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 30</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, the equation becomes:
+\[ (1 + 0.005)^{12} = 1 + r \]</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 13.0%; background: rgba(68, 229, 110, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.130</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.132</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.820</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(75, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 31</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Now, I need to compute \( (1.005)^{12} \).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.0000000000000018%; background: rgba(75, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.020</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.290</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.690</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 72, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 32</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Hmm, I think I can do this by calculating step by step or using logarithms, but maybe I can approximate it.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.0000000000000009%; background: rgba(68, 229, 72, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.003</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.710</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(84, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 33</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">Alternatively, I remember that the effective annual rate (EAR) can be calculated using the formula:
+\[ \text{EAR} = \left(1 + \frac{r}{n}\right)^n - 1 \]
+Where r is the annual nominal rate and n is the number of compounding periods per year.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.000000000000004%; background: rgba(84, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.042</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.700</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 98, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 34</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">In this case, r is 0.06 and n is 12.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 9.343434343434343%; background: rgba(68, 229, 98, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.093</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.102</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.750</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(89, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 35</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So plugging in:
+\[ \text{EAR} = \left(1 + \frac{0.06}{12}\right)^{12} - 1 \]
+\[ \text{EAR} = (1.005)^{12} - 1 \]</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 6.34343434343434%; background: rgba(89, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.063</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.220</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.657</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(81, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 36</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, I need to compute \( (1.005)^{12} \).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.0000000000000036%; background: rgba(81, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.029</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.720</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 72, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 37</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Let me try to calculate that step by step.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.0000000000000009%; background: rgba(68, 229, 72, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.760</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(75, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 38</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">First, I can compute \( 1.005^2 \):
+\( 1.005 \times 1.005 = 1.010025 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.0000000000000018%; background: rgba(75, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.020</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.020</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.750</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 91, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 39</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Then, \( 1.010025^2 \) is:
+\( 1.010025 \times 1.010025 \approx 1.020150 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 7.000000000000006%; background: rgba(68, 229, 91, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.070</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.770</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(84, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 40</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Wait, that's \( 1.005^4 \).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.000000000000004%; background: rgba(84, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.064</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.700</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(69, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 41</span>
+                            <div class="chunk-tags"><span class="tag">uncertainty_management</span></div>
+                        </div>
+                        <div class="chunk-text">Let me see if I can find a pattern or use logarithms.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0.2577319587628857%; background: rgba(69, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.003</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.750</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(81, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 42</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Alternatively, I can use the natural logarithm and exponential function to compute this more accurately.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.0000000000000036%; background: rgba(81, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.750</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 75, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 43</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Let me take the natural log of both sides:
+\( \ln(1.005^{12}) = 12 \ln(1.005) \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.0000000000000018%; background: rgba(68, 229, 75, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.020</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.790</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(84, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 44</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Compute \( \ln(1.005) \).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.818181818181822%; background: rgba(84, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.048</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.042</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.770</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(98, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 45</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">I know that \( \ln(1 + x) \approx x - x^2/2 + x^3/3 - \dots \) for small x.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 9.18181818181818%; background: rgba(98, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.092</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.177</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.818</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 72, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 46</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Since 0.005 is small, I can approximate it.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.0000000000000009%; background: rgba(68, 229, 72, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.004</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.910</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(72, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 47</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, \( \ln(1.005) \approx 0.005 - (0.005)^2/2 + (0.005)^3/3 \)
+Calculate each term:
+First term: 0.005
+Second term: \( (0.005)^2 / 2 = 0.000025 / 2 = 0.0000125 \)
+Third term: \( (0.005)^3 / 3 = 0.000000125 / 3 ≈ 0.0000000417 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.0000000000000009%; background: rgba(72, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.090</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.900</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(78, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 48</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, adding up:
+0.005 - 0.0000125 + 0.0000000417 ≈ 0.0049875417</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.9999999999999916%; background: rgba(78, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.048</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.910</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 88, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 49</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, \( \ln(1.005) ≈ 0.0049875 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.999999999999995%; background: rgba(68, 229, 88, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.060</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.087</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.940</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 94, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 50</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Therefore, \( 12 \times 0.0049875 ≈ 0.05985 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 7.9999999999999964%; background: rgba(68, 229, 94, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.080</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.079</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.880</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(104, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 51</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, \( \ln(1.005^{12}) ≈ 0.05985 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 10.999999999999998%; background: rgba(104, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.110</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.035</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.800</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 75, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 52</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Now, exponentiate both sides to get \( 1.005^{12} ≈ e^{0.05985} \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.0000000000000018%; background: rgba(68, 229, 75, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.020</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.110</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.910</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 97, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 53</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">Compute \( e^{0.05985} \).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 8.999999999999996%; background: rgba(68, 229, 97, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.090</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.067</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.890</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(81, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 54</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">I know that \( e^{0.06} ≈ 1.06183654 \).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 3.9999999999999925%; background: rgba(81, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.800</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(94, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 55</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Since 0.05985 is slightly less than 0.06, the value will be slightly less than 1.06183654.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 8.000000000000007%; background: rgba(94, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.080</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.160</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.840</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 81, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 56</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Let me compute \( e^{0.05985} \).</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.0000000000000036%; background: rgba(68, 229, 81, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.034</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.920</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(84, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 57</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Let me use the Taylor series expansion for e^x around x=0.06.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 5.000000000000004%; background: rgba(84, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.050</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.023</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.880</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 88, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 58</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">But maybe it's easier to use linear approximation.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 6.000000000000005%; background: rgba(68, 229, 88, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.060</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.048</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.930</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(78, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 59</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">The derivative of e^x is e^x, so the slope at x=0.06 is e^{0.06} ≈ 1.06183654.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.898989898989901%; background: rgba(78, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.029</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.042</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.870</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 81, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 60</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, the linear approximation for e^{0.05985} is:</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 3.898989898989902%; background: rgba(68, 229, 81, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.039</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.114</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.899</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(88, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 61</span>
+                            <div class="chunk-tags"><span class="tag">uncertainty_management</span></div>
+                        </div>
+                        <div class="chunk-text">\( e^{0.06} + (0.05985 - 0.06) \times e^{0.06} \)
+Wait, no, that's not right.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 6.000000000000005%; background: rgba(88, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.060</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.420</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.860</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 78, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 62</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">Wait, the linear approximation is:</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 3.0000000000000027%; background: rgba(68, 229, 78, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.920</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 78, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 63</span>
+                            <div class="chunk-tags"><span class="tag">fact_retrieval</span></div>
+                        </div>
+                        <div class="chunk-text">\( e^{a + h} ≈ e^{a} + h e^{a} \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 3.0000000000000027%; background: rgba(68, 229, 78, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.012</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.890</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(97, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 64</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Here, a = 0.06 and h = -0.00015 (since 0.05985 = 0.06 - 0.00015)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 8.999999999999996%; background: rgba(97, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.090</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.088</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.860</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 78, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 65</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, \( e^{0.05985} ≈ e^{0.06} + (-0.00015) e^{0.06} \)
+≈ 1.06183654 - 0.00015 * 1.06183654
+≈ 1.06183654 - 0.000159775
+≈ 1.06167676</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.9999999999999916%; background: rgba(68, 229, 78, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.030</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.080</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.950</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(94, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 66</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, approximately 1.06167676</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 7.9999999999999964%; background: rgba(94, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.080</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.920</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 81, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 67</span>
+                            <div class="chunk-tags"><span class="tag">result_consolidation</span></div>
+                        </div>
+                        <div class="chunk-text">Therefore, \( 1.005^{12} ≈ 1.06167676 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.0000000000000036%; background: rgba(68, 229, 81, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.027</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.920</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 74, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 68</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Thus, the effective annual rate is:
+\( 1.06167676 - 1 = 0.06167676 \)</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.749999999999996%; background: rgba(68, 229, 74, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.017</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.880</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 70, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 69</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Convert that to a percentage:
+0.06167676 * 100 ≈ 6.167676%</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0.5000000000000004%; background: rgba(68, 229, 70, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.005</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.880</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 75, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 70</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, rounding to the nearest hundredth, that would be 6.17%</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 2.141414141414144%; background: rgba(68, 229, 75, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.021</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.014</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.880</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk medium-importance" style="border-left-color: rgba(91, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 71</span>
+                            <div class="chunk-tags"><span class="tag">uncertainty_management</span></div>
+                        </div>
+                        <div class="chunk-text">Wait, let me check if my approximation is accurate enough.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 7.141414141414149%; background: rgba(91, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.071</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.071</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.859</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 72, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 72</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Alternatively, I can compute \( 1.005^{12} \) more precisely.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.0000000000000009%; background: rgba(68, 229, 72, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.253</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.930</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 91, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 73</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Let me compute it step by step:</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 7.000000000000006%; background: rgba(68, 229, 91, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.070</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.097</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.920</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 72, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 74</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Start with 1.005</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 1.0000000000000009%; background: rgba(68, 229, 72, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.010</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.014</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.850</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(81, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 75</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^1 = 1.005</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 4.0000000000000036%; background: rgba(81, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.040</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.078</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.840</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(68, 229, 91, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 76</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^2 = 1.005 * 1.005 = 1.010025</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 6.999999999999995%; background: rgba(68, 229, 91, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">-0.070</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.070</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.880</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk high-importance" style="border-left-color: rgba(129, 229, 68, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 77</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^3 = 1.010025 * 1.005 ≈ 1.010025 + 1.010025*0.005 ≈ 1.010025 + 0.005050125 ≈ 1.015075125</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 18.999999999999993%; background: rgba(129, 229, 68, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.190</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">-0.189</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">0.810</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 78</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^4 ≈ 1.015075125 * 1.005 ≈ 1.015075125 + 1.015075125*0.005 ≈ 1.015075125 + 0.005075375625 ≈ 1.020150500625</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 79</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^5 ≈ 1.020150500625 * 1.005 ≈ 1.020150500625 + 1.020150500625*0.005 ≈ 1.020150500625 + 0.0051007528125 ≈ 1.0252512534375</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 80</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^6 ≈ 1.0252512534375 * 1.005 ≈ 1.0252512534375 + 1.0252512534375*0.005 ≈ 1.0252512534375 + 0.00512625671875 ≈ 1.03037751015625</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 81</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^7 ≈ 1.03037751015625 * 1.005 ≈ 1.03037751015625 + 1.03037751015625*0.005 ≈ 1.03037751015625 + 0.00515188755078125 ≈ 1.0355293977066406</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 82</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^8 ≈ 1.0355293977066406 * 1.005 ≈ 1.0355293977066406 + 1.0355293977066406*0.005 ≈ 1.0355293977066406 + 0.0051776469832303 ≈ 1.040707044689871</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 83</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^9 ≈ 1.040707044689871 * 1.005 ≈ 1.040707044689871 + 1.040707044689871*0.005 ≈ 1.040707044689871 + 0.005203535224444 ≈ 1.045910579914315</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 84</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^10 ≈ 1.045910579914315 * 1.005 ≈ 1.045910579914315 + 1.045910579914315*0.005 ≈ 1.045910579914315 + 0.0052295529595708 ≈ 1.0511401328748858</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 85</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^11 ≈ 1.0511401328748858 * 1.005 ≈ 1.0511401328748858 + 1.0511401328748858*0.005 ≈ 1.0511401328748858 + 0.005255700664444 ≈ 1.0563958335393298</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 86</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">1.005^12 ≈ 1.0563958335393298 * 1.005 ≈ 1.0563958335393298 + 1.0563958335393298*0.005 ≈ 1.0563958335393298 + 0.00528197916716965 ≈ 1.0616778127064995</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 87</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">So, after calculating step by step, \( 1.005^{12} ≈ 1.0616778127064995 \), which is approximately 1.0616778</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 88</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Therefore, the effective annual rate is:
+1.0616778 - 1 = 0.0616778, which is 6.16778%</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 89</span>
+                            <div class="chunk-tags"><span class="tag">active_computation</span></div>
+                        </div>
+                        <div class="chunk-text">Rounded to the nearest hundredth, that's 6.17%</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 90</span>
+                            <div class="chunk-tags"><span class="tag">self_checking</span></div>
+                        </div>
+                        <div class="chunk-text">Wait, so earlier approximation gave me 6.17%, and the step-by-step calculation also gave me 6.16778%, which rounds to 6.17%.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 91</span>
+                            <div class="chunk-tags"><span class="tag">self_checking</span></div>
+                        </div>
+                        <div class="chunk-text">So, that seems consistent.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 92</span>
+                            <div class="chunk-tags"><span class="tag">plan_generation</span></div>
+                        </div>
+                        <div class="chunk-text">Alternatively, I can use the formula for effective annual rate directly:
+EAR = (1 + (0.06/12))^12 - 1
+= (1.005)^12 - 1
+Which we've computed as approximately 6.16778%</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 93</span>
+                            <div class="chunk-tags"><span class="tag">result_consolidation</span></div>
+                        </div>
+                        <div class="chunk-text">So, r is approximately 6.17% when rounded to the nearest hundredth.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 94</span>
+                            <div class="chunk-tags"><span class="tag">self_checking</span></div>
+                        </div>
+                        <div class="chunk-text">Let me just verify if I did everything correctly.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 95</span>
+                            <div class="chunk-tags"><span class="tag">self_checking</span></div>
+                        </div>
+                        <div class="chunk-text">The key was setting the two compounding methods equal over the same time period, which is one year.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 96</span>
+                            <div class="chunk-tags"><span class="tag">self_checking</span></div>
+                        </div>
+                        <div class="chunk-text">So, after one year, both accounts should have the same amount.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 97</span>
+                            <div class="chunk-tags"><span class="tag">self_checking</span></div>
+                        </div>
+                        <div class="chunk-text">Since the monthly compounding gives a slightly higher amount due to compounding more frequently, the equivalent annual rate needs to be higher than 6%, which it is, 6.17%.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 98</span>
+                            <div class="chunk-tags"><span class="tag">self_checking</span></div>
+                        </div>
+                        <div class="chunk-text">I think that's correct.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 99</span>
+                            <div class="chunk-tags"><span class="tag">final_answer_emission</span></div>
+                        </div>
+                        <div class="chunk-text">So, the answer should be 6.17%.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                    <div class="chunk " style="border-left-color: rgba(128, 128, 128, 0.8)">
+                        <div class="chunk-header">
+                            <span class="chunk-idx">Step 100</span>
+                            <div class="chunk-tags"><span class="tag">final_answer_emission</span></div>
+                        </div>
+                        <div class="chunk-text">**Final Answer**
+The equivalent annual interest rate is \boxed{6.17}.</div>
+                        <div class="importance-bar">
+                            <div class="importance-fill" style="width: 0%; background: rgba(128, 128, 128, 0.6)"></div>
+                        </div>
+                        <div class="metrics">
+        
+                            <div class="metric">
+                                <span>Resampling Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Counterfactual Importance</span>
+                                <span class="metric-value">0.000</span>
+                            </div>
+            
+                            <div class="metric">
+                                <span>Accuracy</span>
+                                <span class="metric-value">1.000</span>
+                            </div>
+            
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scrolling to high-importance chunks
+        document.addEventListener('DOMContentLoaded', function() {
+            const chunks = document.querySelectorAll('.chunk');
+            chunks.forEach(chunk => {
+                chunk.addEventListener('click', function() {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+    

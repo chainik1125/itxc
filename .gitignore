@@ -3,6 +3,10 @@
 wandb/
 .data/
 .checkpoints/
+
+# Large generated output files (visualizations, models, results)
+large_files/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

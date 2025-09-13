@@ -1,0 +1,14 @@
+{
+  "0": {
+    "k": 0,
+    "final_test_loss": 23.772695541381836,
+    "final_test_r2": -299.2810363769531,
+    "is_baseline": true
+  },
+  "1": {
+    "k": 1,
+    "final_test_loss": 0.2897016704082489,
+    "final_test_r2": -2.6593210697174072,
+    "is_baseline": false
+  }
+}

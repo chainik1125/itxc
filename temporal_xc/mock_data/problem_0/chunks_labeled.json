@@ -1,0 +1,100 @@
+[
+  {
+    "chunk": "Step 0: Setting up the equation. 1x + 2 = 10",
+    "chunk_idx": 0,
+    "function_tags": [
+      "reasoning",
+      "algebra"
+    ],
+    "resampling_importance_accuracy": 0.3,
+    "counterfactual_importance_accuracy": 0.25,
+    "forced_importance_accuracy": 0.2,
+    "accuracy": 0.8,
+    "depends_on": []
+  },
+  {
+    "chunk": "Step 1: Isolating x. 1x + 2 = 10",
+    "chunk_idx": 1,
+    "function_tags": [
+      "reasoning",
+      "algebra"
+    ],
+    "resampling_importance_accuracy": 0.4,
+    "counterfactual_importance_accuracy": 0.37,
+    "forced_importance_accuracy": 0.28,
+    "accuracy": 0.8300000000000001,
+    "depends_on": [
+      0
+    ]
+  },
+  {
+    "chunk": "Step 2: Simplifying. 1x + 2 = 10",
+    "chunk_idx": 2,
+    "function_tags": [
+      "reasoning",
+      "algebra"
+    ],
+    "resampling_importance_accuracy": 0.5,
+    "counterfactual_importance_accuracy": 0.49,
+    "forced_importance_accuracy": 0.36,
+    "accuracy": 0.8600000000000001,
+    "depends_on": [
+      0,
+      1
+    ]
+  },
+  {
+    "chunk": "Step 3: Computing. 1x + 2 = 10",
+    "chunk_idx": 3,
+    "function_tags": [
+      "reasoning",
+      "algebra"
+    ],
+    "resampling_importance_accuracy": 0.6000000000000001,
+    "counterfactual_importance_accuracy": 0.61,
+    "forced_importance_accuracy": 0.44,
+    "accuracy": 0.89,
+    "depends_on": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "chunk": "Step 4: Verifying. 1x + 2 = 10",
+    "chunk_idx": 4,
+    "function_tags": [
+      "reasoning",
+      "algebra"
+    ],
+    "resampling_importance_accuracy": 0.7,
+    "counterfactual_importance_accuracy": 0.73,
+    "forced_importance_accuracy": 0.52,
+    "accuracy": 0.92,
+    "depends_on": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "chunk": "Step 5: Final answer. 1x + 2 = 10",
+    "chunk_idx": 5,
+    "function_tags": [
+      "reasoning",
+      "algebra"
+    ],
+    "resampling_importance_accuracy": 0.8,
+    "counterfactual_importance_accuracy": 0.85,
+    "forced_importance_accuracy": 0.6000000000000001,
+    "accuracy": 0.9500000000000001,
+    "depends_on": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "problem": "Solve the equation: 1x + 2 = 10. Find x.",
+  "level": "medium",
+  "type": "algebra",
+  "gt_solution": "x = 8.00",
+  "gt_answer": "8.00",
+  "nickname": "linear_equation_0"
+}
